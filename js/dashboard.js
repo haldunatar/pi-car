@@ -45,12 +45,12 @@ $(function() {
     $(engineButton).click(function() {
 
         if(engineStart) {
-            engineActive(true);
+            engineActive(false);
             $(this).text('Start');
             $(this).removeClass('engine-button--stop');
             $('.direction-button').removeClass('direction-button--on');
         } else {
-            engineActive(false);
+            engineActive(true);
             $(this).text('Stop');
             $(this).addClass('engine-button--stop');
             $('.direction-button').addClass('direction-button--on');
