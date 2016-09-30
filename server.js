@@ -69,7 +69,7 @@ app.post('/', (req, res) => {
     if(req.body.key) {
         console.log(req.body.key);
 
-        directions[req.body.key];
+        directions[req.body.key]();
         res.sendStatus(200);
     } else {
         res.sendStatus(404);
