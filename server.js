@@ -9,30 +9,48 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 
 //Gpio pins setup
-const leftMotor = new Gpio(19, 'out');
-const rightMotor = new Gpio(17, 'out');
+const leftMotorF = new Gpio(20, 'out');
+const leftMotorB = new Gpio(21, 'out');
 
-const left = () => leftMotor.writeSync(1);
-const right = () => rightMotor.writeSync(1);
-
-// Resolve this with h-bridge
-// const back = () => {
-//     leftMotor.writeSync(1);
-//     rightMotor.writeSync(1);
-// };
-
-const forward = () => {
-    leftMotor.writeSync(1);
-    rightMotor.writeSync(1);
-};
+const rightMotorF = new Gpio(12, 'out');
+const rightMotorB = new Gpio(16, 'out');
 
 const stop = () => {
-    leftMotor.writeSync(0);
-    rightMotor.writeSync(0);
+    leftMotorB.writeSync(0);
+    leftMotorF.writeSync(0);
+    rightMotorF.writeSync(0);
+    rightMotorB.writeSync(0);
+};
+
+const forward = () => {
+    leftMotorB.writeSync(0);
+    rightMotorB.writeSync(0);
+
+    leftMotorF.writeSync(1);
+    rightMotorF.writeSync(1);
+};
+
+const back = () => {
+    leftMotorF.writeSync(0);
+    rightMotorF.writeSync(0);
+
+    leftMotorB.writeSync(1);
+    rightMotorB.writeSync(1);
+};
+
+const left = () => {
+    stop();
+    rightMotorF.writeSync(1);
+};
+
+const right = () => {
+    stop();
+    leftMotorF.writeSync(1);
 };
 
 const directions = {
     forward,
+    back,
     left,
     right
 };
