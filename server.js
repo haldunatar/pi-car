@@ -9,11 +9,19 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 
 //Gpio pins setup
+/*** Left  Motor ***/
 const leftMotorF = new Gpio(20, 'out');
 const leftMotorB = new Gpio(21, 'out');
 
+/*** Right  Motor ***/
 const rightMotorF = new Gpio(12, 'out');
 const rightMotorB = new Gpio(16, 'out');
+
+/*** Lights ***/
+const lights = new Gpio(17, 'out');
+
+const engineOn = () =>  lights.writeSync(1);
+const engineOff = () =>  lights.writeSync(0);
 
 const stop = () => {
     leftMotorB.writeSync(0);
@@ -59,10 +67,25 @@ app.get('/', (req, res) =>  res.render('./index.html'));
 
 app.post('/', (req, res) => {
     if(req.body.key) {
-        console.log(directions[req.body.key]);
+        console.log(req.body.key);
+
         directions[req.body.key];
         res.sendStatus(200);
     } else {
+        res.sendStatus(404);
+    }
+});
+
+app.post('/start', (req, res) => {
+    if(req.body.key) {
+        console.log('engine started!');
+
+        engineOn();
+        res.sendStatus(200);
+    } else {
+        console.log('engine stoped!');
+
+        engineOff();
         res.sendStatus(404);
     }
 });

@@ -6,11 +6,9 @@ $(function() {
     var forwardButton = $('.direction-button--forward');
     var backButton = $('.direction-button--back');
     var engineButton = $('.engine-button');
-
-    // Effects
     var pressed = 'direction-button--pressed';
 
-    var sendCommand = function(command) {
+    var callDirection = function(command) {
         var car = {
             key: command
         };
@@ -28,78 +26,93 @@ $(function() {
         }
     };
 
+    var engineActive = function(command) {
+        var car = {
+            key: command
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/start',
+            data: JSON.stringify(car),
+            contentType: "application/json",
+            success: function(res) {
+                console.log('Server res: ', res);
+            }
+        });
+    };
+
     $(engineButton).click(function() {
 
         if(engineStart) {
-            engineStart = false;
+            engineActive(true);
             $(this).text('Start');
             $(this).removeClass('engine-button--stop');
             $('.direction-button').removeClass('direction-button--on');
         } else {
-            engineStart = true;
+            engineActive(false);
             $(this).text('Stop');
             $(this).addClass('engine-button--stop');
             $('.direction-button').addClass('direction-button--on');
         }
-        sendCommand(engineStart)
     });
 
     $(leftButton)
         .on('mouseup touchend', function() {
-            sendCommand('stop');
+            callDirection('stop');
             $('p').text('stop');
 
-            $(this).removeClass('direction-button--pressed');
+            $(this).removeClass(pressed);
         })
         .on('mousedown touchstart', function() {
-            sendCommand('left');
+            callDirection('left');
             $('p').text('left');
 
-            $(this).addClass('direction-button--pressed');
+            $(this).addClass(pressed);
         });
 
     $(rightButton)
         .on('mouseup touchend', function() {
-            sendCommand('stop');
-            $(this).removeClass('direction-button--pressed');
+            callDirection('stop');
+            $(this).removeClass(pressed);
         })
         .on('mousedown touchstart', function() {
-            sendCommand('right');
-            $(this).addClass('direction-button--pressed');
+            callDirection('right');
+            $(this).addClass(pressed);
         });
 
     $(forwardButton)
         .on('mouseup touchend', function() {
-            sendCommand('stop');
-            $(this).removeClass('direction-button--pressed');
+            callDirection('stop');
+            $(this).removeClass(pressed);
         })
         .on('mousedown touchstart', function() {
-            sendCommand('forward');
-            $(this).addClass('direction-button--pressed');
+            callDirection('forward');
+            $(this).addClass(pressed);
         });
 
     $(backButton)
         .on('mouseup touchend', function() {
-            sendCommand('stop');
-            $(this).removeClass('direction-button--pressed');
+            callDirection('stop');
+            $(this).removeClass(pressed);
         })
         .on('mousedown touchstart', function() {
-            sendCommand('back');
-            $(this).addClass('direction-button--pressed');
+            callDirection('back');
+            $(this).addClass(pressed);
         });
 
 
     $(document).keydown(function (e) {
        if(e.keyCode === 37) {
-           sendCommand('left')
+           callDirection('left')
        } else if(e.keyCode === 38) {
-           sendCommand('forward')
+           callDirection('forward')
        } else if(e.keyCode === 39) {
-           sendCommand('right')
+           callDirection('right')
        } else if(e.keyCode === 40) {
-           sendCommand('back')
+           callDirection('back')
        }
     }).keyup(function () {
-        sendCommand('stop');
+        callDirection('stop');
     })
 });
