@@ -1,0 +1,85 @@
+*{
+    font-family: 'Lalezar', cursive;
+    margin:0;
+    padding:0;
+    text-align: center;
+}
+
+body {
+    background: #483939;
+}
+
+section {
+    margin:50px auto;
+    width: 400px;
+    max-width:90%;
+}
+
+.engine-button-container {
+    margin-top:50px;
+    width: 100%;
+}
+
+.engine-button {
+    background: -webkit-linear-gradient(top, rgba(76, 76, 76, 1) 0%, rgba(89, 89, 89, 1) 12%, rgba(102, 102, 102, 1) 25%, rgba(71, 71, 71, 1) 39%, rgba(44, 44, 44, 1) 50%, rgba(0, 0, 0, 1) 58%, rgba(0, 0, 0, 1) 58%, rgba(17, 17, 17, 1) 60%, rgba(43, 43, 43, 1) 76%, rgba(28, 28, 28, 1) 91%, rgba(19, 19, 19, 1) 100%);
+    border-radius: 10px;
+    color: #FFFF00;
+    cursor: pointer;
+    font-size: 2.2em;
+    font-weight: bolder;
+    height: 50px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.engine-button--stop {
+    color: #808080;
+}
+
+.directions {
+    margin-top: 50px;
+    width: 100%;
+}
+
+.direction-button {
+    background: -webkit-linear-gradient(top, rgba(125,126,125,1) 0%, rgba(14,14,14,1) 100%);
+    border-radius: 10px;
+    color: #7D7E7D;
+    cursor: pointer;
+    font-size: 3.5em;
+    font-weight: bolder; 
+    height: 70px;
+    margin: 10px;
+    width: 70px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.direction-button--on {
+    color: #FFFF00;
+}
+
+.direction-button--pressed {
+    background: -webkit-linear-gradient(top, rgba(149,149,149,1) 0%,rgba(13,13,13,1) 46%,rgba(1,1,1,1) 50%,rgba(10,10,10,1) 53%,rgba(78,78,78,1) 76%,rgba(56,56,56,1) 87%,rgba(27,27,27,1) 100%);
+}
+
+.direction-button--forward {
+    display: block;
+    margin: 0 auto 2px auto;
+}
+
+.direction-button--left {
+    display: inline-block;
+}
+
+.direction-button--back {
+    display: inline-block;
+}
+
+.direction-button--right {
+    display: inline-block;
+}
+
