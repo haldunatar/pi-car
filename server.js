@@ -60,7 +60,8 @@ const directions = {
     forward,
     back,
     left,
-    right
+    right,
+    stop
 };
 
 app.get('/', (req, res) =>  res.render('./index.html'));
