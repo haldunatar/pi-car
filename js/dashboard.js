@@ -51,7 +51,7 @@ $(function() {
 
             $(this).removeClass('direction-button--pressed');
         })
-        .on('mouseup touchstart', function() {
+        .on('mousedown touchstart', function() {
             sendCommand('left');
             $('p').text('left');
 
@@ -63,7 +63,7 @@ $(function() {
             sendCommand('stop');
             $(this).removeClass('direction-button--pressed');
         })
-        .on('mouseup touchstart', function() {
+        .on('mousedown touchstart', function() {
             sendCommand('right');
             $(this).addClass('direction-button--pressed');
         });
@@ -73,7 +73,7 @@ $(function() {
             sendCommand('stop');
             $(this).removeClass('direction-button--pressed');
         })
-        .on('mouseup touchstart', function() {
+        .on('mousedown touchstart', function() {
             sendCommand('forward');
             $(this).addClass('direction-button--pressed');
         });
@@ -83,7 +83,7 @@ $(function() {
             sendCommand('stop');
             $(this).removeClass('direction-button--pressed');
         })
-        .on('mouseup touchstart', function() {
+        .on('mousedown touchstart', function() {
             sendCommand('back');
             $(this).addClass('direction-button--pressed');
         });
