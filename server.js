@@ -10,12 +10,12 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse applica
 
 //Gpio pins setup
 /*** Left  Motor ***/
-const leftMotorF = new Gpio(20, 'out');
-const leftMotorB = new Gpio(21, 'out');
+const leftMotorF = new Gpio(21, 'out');
+const leftMotorB = new Gpio(20, 'out');
 
 /*** Right  Motor ***/
-const rightMotorF = new Gpio(12, 'out');
-const rightMotorB = new Gpio(16, 'out');
+const rightMotorF = new Gpio(16, 'out');
+const rightMotorB = new Gpio(12, 'out');
 
 /*** Lights ***/
 const lights = new Gpio(17, 'out');
