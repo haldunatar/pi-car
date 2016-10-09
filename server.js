@@ -49,11 +49,13 @@ const back = () => {
 const left = () => {
     stop();
     rightMotorF.writeSync(1);
+    leftMotorB.writeSync(1);
 };
 
 const right = () => {
     stop();
     leftMotorF.writeSync(1);
+    rightMotorB.writeSync(1);
 };
 
 const directions = {
