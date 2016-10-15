@@ -1,4 +1,49 @@
 $(function() {
+
+    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+    var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+    var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+    var grammar = '#JSGF V1.0; grammar colors; public <color> = start | stop | back | forward | left | right ;'
+    var recognition = new SpeechRecognition();
+    var speechRecognitionList = new SpeechGrammarList();
+
+    speechRecognitionList.addFromString(grammar, 1);
+    recognition.grammars = speechRecognitionList;
+
+    //recognition.continuous = false;
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    $('#voiceCommand').click(function () {
+        console.log('clicked')
+        recognition.start();
+    });
+
+    recognition.onresult = function(event) {
+        var voiceCommand = event.results[0][0].transcript;
+
+        var commands = [
+            'back',
+            'forward',
+            'left',
+            'right',
+            'start',
+            'stop'
+        ];
+
+        for(var i = 0; i < commands.length; i++) {
+            if(commands[i] === voiceCommand) {
+                callDirection(voiceCommand);
+            }
+        }
+    };
+
+    recognition.onspeechend = function() {
+        recognition.stop();
+    };
+
     var engineStart = false;
 
     var leftButton = $('.direction-button--left');
@@ -9,10 +54,15 @@ $(function() {
     var pressed = 'direction-button--pressed';
 
     var callDirection = function(command) {
+
+        if(command === 'start') {
+            engineStart = true;
+        }
+
         var car = {
             key: command
         };
-
+        console.log(command)
         if(engineStart) {
             $.ajax({
                 type: "POST",
@@ -116,5 +166,5 @@ $(function() {
        }
     }).keyup(function () {
         callDirection('stop');
-    })
+    });
 });
