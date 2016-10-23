@@ -1,7 +1,7 @@
 *{
     font-family: 'Lalezar', cursive;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     text-align: center;
 }
 
@@ -10,13 +10,23 @@ body {
 }
 
 section {
-    margin:50px auto;
+    margin: 50px auto;
     width: 400px;
-    max-width:90%;
+    max-width: 90%;
+}
+
+.speak {
+    background: #fff;
+    border-radius: 10px;
+    color: red;
+    font-size: 1.5em;
+    margin: 0 auto 15px auto;
+    cursor: pointer;
+    width: 25%;
 }
 
 .engine-button-container {
-    margin-top:50px;
+    margin-top: 50px;
     width: 100%;
 }
 
