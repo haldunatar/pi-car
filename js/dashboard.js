@@ -1,20 +1,11 @@
 $(function() {
 
-    // Voice control settings
-    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-    var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
-    var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+    var browser = navigator.userAgent;
+    var isChrome = browser.indexOf('Chrome') > -1;
 
-    var grammar = '#JSGF V1.0; grammar colors; public <color> = start | stop | back | forward | left | right ';
-    var recognition = new SpeechRecognition();
-    var speechRecognitionList = new SpeechGrammarList();
-
-    speechRecognitionList.addFromString(grammar, 1);
-    recognition.grammars = speechRecognitionList;
-
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
+    if(isChrome) {
+        initializeVoiceControl();
+    }
 
     // Command Settings
     var engineStart = false;
@@ -25,8 +16,6 @@ $(function() {
     var engineButton = $('.engine-button');
     var voiceControl = $('#voiceCommand').hide();
     var pressed = 'direction-button--pressed';
-
-    voiceControlPanel();
 
     $(engineButton).click(function() {
 
@@ -43,7 +32,10 @@ $(function() {
             $(this).text('Stop');
             $(this).addClass('engine-button--stop');
             $('.direction-button').addClass('direction-button--on');
-            $(voiceControl).show();
+
+            if(isChrome) {
+                $(voiceControl).show();
+            }
         }
     });
 
@@ -112,7 +104,22 @@ $(function() {
         callDirection('stop');
     }
 
-    function voiceControlPanel() {
+    function initializeVoiceControl() {
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+        var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
+        var grammar = '#JSGF V1.0; grammar colors; public <color> = start | stop | back | forward | left | right ';
+        var recognition = new SpeechRecognition();
+        var speechRecognitionList = new SpeechGrammarList();
+
+        speechRecognitionList.addFromString(grammar, 1);
+        recognition.grammars = speechRecognitionList;
+
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
         $(voiceControl).click(function () {
             recognition.start();
         });
