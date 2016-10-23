@@ -3,10 +3,6 @@ $(function() {
     var browser = navigator.userAgent;
     var isChrome = browser.indexOf('Chrome') > -1;
 
-    if(isChrome) {
-        initializeVoiceControl();
-    }
-
     // Command Settings
     var engineStart = false;
     var leftButton = $('.direction-button--left');
@@ -16,6 +12,10 @@ $(function() {
     var engineButton = $('.engine-button');
     var voiceControl = $('#voiceCommand').hide();
     var pressed = 'direction-button--pressed';
+
+    if(isChrome) {
+        initializeVoiceControl();
+    }
 
     $(engineButton).click(function() {
 
@@ -43,14 +43,10 @@ $(function() {
     $(leftButton)
         .on('mouseup touchend', function() {
             callDirection('stop');
-            $('p').text('stop');
-
             $(this).removeClass(pressed);
         })
         .on('mousedown touchstart', function() {
             callDirection('left');
-            $('p').text('left');
-
             $(this).addClass(pressed);
         });
 
