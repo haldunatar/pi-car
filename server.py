@@ -1,8 +1,11 @@
 from flask import Flask, request, send_from_directory
+from flask_cors import CORS
 import RPi.GPIO as GPIO
 import os
 
 app = Flask(__name__)
+# Enable CORS for all routes, allowing requests from any origin
+CORS(app)
 
 # GPIO pins setup (using BCM numbering)
 GPIO.setmode(GPIO.BCM)
