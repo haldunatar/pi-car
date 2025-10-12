@@ -1,11 +1,10 @@
-from flask import Flask, request, send_from_directory
+from flask import Flask, send_from_directory, request
 from flask_cors import CORS
 import RPi.GPIO as GPIO
 import os
 
 app = Flask(__name__)
-# Enable CORS for all routes, allowing requests from any origin
-CORS(app)
+CORS(app)  # Enable CORS for all routes
 
 # GPIO pins setup (using BCM numbering)
 GPIO.setmode(GPIO.BCM)
@@ -72,10 +71,15 @@ directions = {
     "stop": stop
 }
 
-# Serve static files (e.g., index.html)
+# Serve index.html for the root route
 @app.route('/')
 def serve_index():
     return send_from_directory('.', 'index.html')
+
+# Serve static files from the root directory and subdirectories (js, css, etc.)
+@app.route('/<path:path>')
+def serve_static(path):
+    return send_from_directory('.', path)
 
 # Handle direction control
 @app.route('/', methods=['POST'])
