@@ -17,6 +17,7 @@ print("Ready – press button to toggle, Ctrl-C to stop (relay will turn OFF)")
 
 try:
     while True:
+        GPIO.output(RELAY, GPIO.LOW) 
         if GPIO.input(BUTTON) == GPIO.HIGH:          # button down
             print("BUTTON PRESSED!")
             time.sleep(0.2)                         # debounce
