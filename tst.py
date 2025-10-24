@@ -1,42 +1,31 @@
+# button_toggle_relay.py
 import RPi.GPIO as GPIO
 import time
 
-# === CONFIGURATION ===
-BUTTON_PIN = 17   # Push button input
-RELAY_PIN  = 4    # Relay control output
-ACTIVE_LOW = True # Set to True if relay triggers on LOW (most modules)
+BUTTON = 17   # push-button on physical pin 11
+RELAY  = 4    # relay on physical pin 26
 
-# === SETUP ===
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Pull-down
-GPIO.setup(RELAY_PIN, GPIO.OUT)
+GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)   # internal pull-down
+GPIO.setup(RELAY,  GPIO.OUT)
 
-# Initial state
-relay_state = False
-GPIO.output(RELAY_PIN, GPIO.LOW)  # Relay OFF
+# Start with relay OFF
+GPIO.output(RELAY, GPIO.LOW)
+state = False
 
-print("Press the button to toggle the light. Ctrl+C to exit.")
+print("Ready – press the button to toggle the light (Ctrl-C to quit)")
 
 try:
     while True:
-         print(f" {'BUTTON_PIN' BUTTON_PIN }")
-        if GPIO.input(BUTTON_PIN) == GPIO.HIGH:  # Button pressed
-            time.sleep(0.2)  # Debounce
-                print("\nBtn pressed")
-            if GPIO.input(BUTTON_PIN) == GPIO.HIGH:  # Still pressed
-                # Toggle relay
-                relay_state = not relay_state
-                new_state = GPIO.LOW if (relay_state and ACTIVE_LOW) or (not relay_state and not ACTIVE_LOW) else GPIO.HIGH
-                GPIO.output(RELAY_PIN, new_state)
-                print(f"Light {'ON' if relay_state else 'OFF'}")
-                
-                # Wait until button released
-                while GPIO.input(BUTTON_PIN) == GPIO.HIGH:
-                    time.sleep(0.01)
-
+        if GPIO.input(BUTTON) == GPIO.HIGH:      # button pressed
+            time.sleep(0.2)                     # simple debounce
+            if GPIO.input(BUTTON) == GPIO.HIGH:  # still pressed
+                state = not state               # toggle
+                GPIO.output(RELAY, GPIO.HIGH if state else GPIO.LOW)
+                print("Light:", "ON" if state else "OFF")
+                while GPIO.input(BUTTON) == GPIO.HIGH:
+                    time.sleep(0.01)        # wait for release
 except KeyboardInterrupt:
-    print("\nStopped by user")
-
+    print("\nStopped")
 finally:
     GPIO.cleanup()
-    print("GPIO cleaned up.")
