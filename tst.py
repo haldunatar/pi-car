@@ -17,7 +17,8 @@ print("Ready – press the button to toggle the light (Ctrl-C to quit)")
 
 try:
     while True:
-        if GPIO.input(BUTTON) == GPIO.HIGH:      # button pressed
+        if GPIO.input(BUTTON) == GPIO.HIGH:
+            print("BUTTON PRESSED!")      # button pressed
             time.sleep(0.2)                     # simple debounce
             if GPIO.input(BUTTON) == GPIO.HIGH:  # still pressed
                 state = not state               # toggle
