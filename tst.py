@@ -13,14 +13,16 @@ GPIO.setup(RELAY_PIN, GPIO.OUT)
 
 # Initial state
 relay_state = False
-GPIO.output(RELAY_PIN, GPIO.LOW if ACTIVE_LOW else GPIO.HIGH)  # Relay OFF
+GPIO.output(RELAY_PIN, GPIO.LOW)  # Relay OFF
 
 print("Press the button to toggle the light. Ctrl+C to exit.")
 
 try:
     while True:
+         print(f" {'BUTTON_PIN' BUTTON_PIN }")
         if GPIO.input(BUTTON_PIN) == GPIO.HIGH:  # Button pressed
             time.sleep(0.2)  # Debounce
+                print("\nBtn pressed")
             if GPIO.input(BUTTON_PIN) == GPIO.HIGH:  # Still pressed
                 # Toggle relay
                 relay_state = not relay_state
