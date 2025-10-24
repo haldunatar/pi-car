@@ -1,61 +1,44 @@
-# relay_blink_with_button_log.py
+# button_toggle_perfect.py
 import RPi.GPIO as GPIO
 import time
-import threading
 
-# ---------- PINS ----------
-RELAY  = 18   # Physical pin 12 → active-LOW relay
-BUTTON = 17   # Physical pin 11 → push button
+BUTTON = 17   # GPIO 17 (pin 11)
+RELAY  = 18    # GPIO 1  (pin 7)  ← YOUR WORKING PIN
 
-# ---------- SETUP ----------
 GPIO.setmode(GPIO.BCM)
-
-# Relay
-GPIO.setup(RELAY, GPIO.OUT)
-GPIO.output(RELAY, GPIO.HIGH)        # HIGH = OFF (active-low)
-
-# Button (pull-down)
 GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(RELAY, GPIO.OUT)
 
-# ---------- RELAY BLINK (in background) ----------
-def relay_blink():
-    while True:
-        GPIO.output(RELAY, GPIO.LOW)   # Lamp ON
-        print("LAMP ON")
-        time.sleep(5)
+# Start OFF
+GPIO.output(RELAY, GPIO.LOW)
+light_on = False
+button_was_pressed = False  # Track button state
 
-        GPIO.output(RELAY, GPIO.HIGH)  # Lamp OFF
-        print("LAMP OFF")
-        time.sleep(5)
-
-# Start relay blinking in a separate thread
-threading.Thread(target=relay_blink, daemon=True).start()
-
-# ---------- BUTTON LOGGING (main thread) ----------
-print("Button monitoring started. Press button to see logs.")
-print("Relay runs independently.")
-
-prev_state = False
+print("Lamp OFF. Press button to toggle. Ctrl-C to stop.")
 
 try:
     while True:
-        current_state = GPIO.input(BUTTON) == GPIO.HIGH
+        button_is_pressed = GPIO.input(BUTTON) == GPIO.HIGH
 
-        # Detect PRESS (LOW → HIGH)
-        if current_state and not prev_state:
-            print("BUTTON PRESSED")
+        # Detect RISING EDGE: button goes from NOT pressed → PRESSED
+        if button_is_pressed and not button_was_pressed:
+            print("BUTTON PRESSED! (edge detected)")
+            time.sleep(0.01)  # tiny debounce
 
-        # Detect RELEASE (HIGH → LOW)
-        elif not current_state and prev_state:
-            print("BUTTON RELEASED")
+            # Confirm still pressed
+            if GPIO.input(BUTTON) == GPIO.HIGH:
+                light_on = not light_on
+                GPIO.output(RELAY, GPIO.HIGH if light_on else GPIO.LOW)
+                print(f"Lamp → {'ON' if light_on else 'OFF'}")
 
-        prev_state = current_state
-        time.sleep(0.01)  # small delay, low CPU
+        # Save current state for next loop
+        button_was_pressed = button_is_pressed
+
+        time.sleep(0.01)  # small delay to reduce CPU usage
 
 except KeyboardInterrupt:
-    print("\nStopped by user")
-
+    print("\nCtrl-C → turning lamp OFF")
+    GPIO.output(RELAY, GPIO.LOW)
 finally:
-    GPIO.output(RELAY, GPIO.HIGH)  # Ensure lamp OFF
     GPIO.cleanup()
-    print("GPIO cleaned up. Bye!")
+    print("Clean exit.")
