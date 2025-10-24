@@ -3,16 +3,16 @@ import time
 
 # Set up GPIO
 GPIO.setmode(GPIO.BCM)  # Use BCM numbering
-GPIO.setup(18, GPIO.OUT) # Set pin 18 as output
+GPIO.setup(18, GPIO.OUT) # Set pin 18 as output ACTIVE LOW RELAY
 
 try:
     while True:
         GPIO.output(18, GPIO.HIGH)  # Turn ON
-        print("GPIO 18 ON")
+        print("GPIO 18 OFF")
         time.sleep(5)              # Wait 5 seconds
         
         GPIO.output(18, GPIO.LOW)   # Turn OFF
-        print("GPIO 18 OFF")
+        print("GPIO 18 ON")
         time.sleep(5)              # Wait 5 seconds
 
 except KeyboardInterrupt:
