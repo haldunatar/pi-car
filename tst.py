@@ -3,7 +3,7 @@ import time
 
 # Set up GPIO
 GPIO.setmode(GPIO.BCM)  # Use BCM numbering
-GPIO.setup(7, GPIO.OUT) # Set pin 7 as output
+GPIO.setup(4, GPIO.OUT) # Set pin 7 as output
 
 try:
     while True:
